@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31321.278
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NyaBackground", "NyaBackground\NyaBackground.csproj", "{650F6AD7-881A-46DF-B6D9-B9BCF3002D5E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{650F6AD7-881A-46DF-B6D9-B9BCF3002D5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{650F6AD7-881A-46DF-B6D9-B9BCF3002D5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{650F6AD7-881A-46DF-B6D9-B9BCF3002D5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{650F6AD7-881A-46DF-B6D9-B9BCF3002D5E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BED4EF6B-CA9E-4814-BC58-D021D4CD6954}
+	EndGlobalSection
+EndGlobal
