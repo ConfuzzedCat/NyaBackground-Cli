@@ -8,7 +8,7 @@ namespace NyaBackgroundTest
         static async Task Main(string[] args)
         {
             Console.WriteLine("Welcome!");
-            await NekosDotLife.NekoImage();
+            await NekosDotLife.Category();
             GC.Collect();
             bool repeat = true;
             while (repeat)

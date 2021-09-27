@@ -1,5 +1,5 @@
-﻿using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Memory;
+﻿using System.ComponentModel;
+using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using System;
@@ -7,7 +7,6 @@ using System.IO;
 using System.Net;
 using System.Runtime.InteropServices;
 using Path = System.IO.Path;
-
 namespace NyaBackgroundTest
 {
     class ImageHandler
@@ -15,10 +14,7 @@ namespace NyaBackgroundTest
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool SystemParametersInfo(uint uiAction, uint uiParam, String pvParam, uint fWinIni);
-
-        private const uint SPI_SETDESKWALLPAPER = 0x14;
-
-
+        private const uint SPI_SETDESKWALLPAPER = 0x14;        
         public static void WallpaperSetter(string url)
         {
             string file_name = Path.Combine(Directory.GetCurrentDirectory(), "current.png");
@@ -26,6 +22,14 @@ namespace NyaBackgroundTest
             string _file_name;
 
             if (File.Exists(file_name)) File.Delete(file_name);
+            if (!File.Exists(Background)) 
+            {
+                System.Console.WriteLine("Warning: No \"bg.png\" file found, default image will be downloaded...");
+                using (WebClient client = new WebClient())
+                {
+                    client.DownloadFile("https://i.imgur.com/59J10Ch.jpeg", "bg.png");
+                }
+            }
             using (WebClient client = new WebClient())
             {
                 client.DownloadFile(url, "current.png");
@@ -36,16 +40,13 @@ namespace NyaBackgroundTest
             if (!SystemParametersInfo(SPI_SETDESKWALLPAPER,
                     0, file_name, flags))
             {
-                Console.WriteLine("Error");
+                Console.WriteLine("Error: Could not set wallpaper!");
             }
         }
 
         public static string MergeImages(string downloadImage, string backgroundImage)
         {
-            Console.WriteLine("DEBUG: Merge called...");
-
-            
-            Configuration.Default.MemoryAllocator = ArrayPoolMemoryAllocator.CreateWithModeratePooling();
+            Console.WriteLine("Info: Merge called...");
             string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "current.png");
             Image<Rgba32> downloadImg = Image.Load<Rgba32>(downloadImage);
             Image<Rgba32> backgroundImg = Image.Load<Rgba32>(backgroundImage);
@@ -76,26 +77,22 @@ namespace NyaBackgroundTest
             }
             else
             {
-                Console.WriteLine("Manually change your wallpaper!");
+                Console.WriteLine("Info: Manually change your wallpaper!");
                 return "False";
-            }
-            Configuration.Default.MemoryAllocator.ReleaseRetainedResources();
-            
+            }            
         }
 
         static Image<Rgba32> Resizer(Image<Rgba32> dwnImage, Image<Rgba32> bgImage)
         {
-
             int dwnImageX = dwnImage.Width;
             int dwnImageY = dwnImage.Height;
             int bgImageX = bgImage.Width;
             int bgImageY = bgImage.Height;
             var resizeFactorX = bgImageX / dwnImageX * dwnImageX;
             var resizeFactorY = bgImageY / dwnImageY * dwnImageY;
-            Console.WriteLine($"bg: {bgImageX},{bgImageY}; dwn: {dwnImageX},{dwnImageY}");
+            Console.WriteLine($"DEBUG: bg: {bgImageX},{bgImageY}; dwn: {dwnImageX},{dwnImageY}");
             Image<Rgba32> dwnImageResized;
             string tempLoc = Path.Combine(Directory.GetCurrentDirectory(), "current.png");
-
             if (bgImageX < dwnImageX)
             {
                 File.Delete(tempLoc);
@@ -113,6 +110,5 @@ namespace NyaBackgroundTest
             dwnImageResized = dwnImage;
             return dwnImageResized;
         }
-
     }
 }
